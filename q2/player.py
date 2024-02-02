@@ -8,7 +8,7 @@ class Player:
         self.rect = self.image.get_rect()
         self.screen_rect = self.screen.get_rect()
         
-        # initial position of a player : bottom center
+        # initial position of a player : screen center
         
         self.rect.x = self.screen_rect.centerx
         self.rect.y = self.screen_rect.centery
@@ -37,14 +37,17 @@ class Player:
         if self.moving_left and self.rect.left > self.screen_rect.left:
             self.center_x -= self.settings.move_speed_factor
             
-        self.rect.centerx = self.center_x
-        self.rect.centery= self.center_y
-            
+        
+        self.center_player()
         
 
     #draw player on the screen
     def blit_me(self):
         self.screen.blit(self.image, self.rect)
+        
+    def center_player(self):
+        self.rect.centerx = self.center_x
+        self.rect.centery= self.center_y
         
         
     

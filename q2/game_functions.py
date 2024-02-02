@@ -3,6 +3,8 @@ import pygame
 from projectile import Projectile
 from enemy import Enemy
 from collectible import Collectible
+from time import sleep
+
 
 def check_events(settings, screen,player, projectiles):
     for event in pygame.event.get():
@@ -79,6 +81,31 @@ def create_collectibles(screen, settings, collectibles):
         collectible = Collectible(screen,settings)
         collectibles.add(collectible)
 
-def update_enemy( enemies, player):
-    if pygame.sprite.spritecollide(player, enemies):
-        print("ship hit")
+def update_enemy( screen,settings,enemies, player, stats, projectiles):
+    if pygame.sprite.spritecollideany(player, enemies):
+        player_hit(screen,settings,enemies,player, stats, projectiles)
+        
+
+def player_hit(screen, settings, enemies, player, stats, projectiles):
+    if stats.player_lives_left > 0:
+        
+        #decreament the life of a player
+        stats.player_lives_left -=1
+        
+        #clear all the projectiles and enemies
+        projectiles.empty()
+        enemies.empty()
+        
+        
+        #create a set of enemies
+        create_enemies(screen,settings,enemies)
+        
+        #center the player
+        player.center_player()
+        
+        #pause the game for half a second
+        sleep(0.5)
+    
+    else:
+        stats.game_active = False
+    

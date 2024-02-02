@@ -3,6 +3,8 @@ class Settings:
         self.window_width = 800
         self.window_height = 500
         self.bg_color = (230,230,230)
+        #player properties
+        self.player_lives_left = 3
         self.move_speed_factor = 1
         
         #Projectile attributes
