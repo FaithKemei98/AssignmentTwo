@@ -2,6 +2,7 @@ import pygame
 from settings import Settings
 import game_functions as gf
 from player import Player
+from pygame.sprite import Group
 
 def run_game():
     #settings instance
@@ -14,12 +15,21 @@ def run_game():
     # player instance
     player = Player(screen, settings)
     
-    screen.fill(settings.bg_color)
+    #creating a list of projectiles
+    projectiles = Group()
+    
+    #enemy instance
+    enemies = Group()
+    
+    gf.create_enemies(screen,settings,enemies)
     
     while True:
-        gf.check_events(player)
-        player.movement()
-        gf.update_screen(player)
+        
+        gf.check_events(settings, screen, player,projectiles)
+        gf.update_projectile(projectiles, enemies)
+        gf.update_screen(screen, settings, player, projectiles, enemies)
+        
+        
         pygame.display.flip()
 
 run_game()

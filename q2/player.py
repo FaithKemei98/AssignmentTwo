@@ -26,7 +26,7 @@ class Player:
     
     
     #movement of the player
-    def movement(self):
+    def update(self):
         if self.moving_up and self.rect.top > self.screen_rect.top:
             self.center_y -= self.settings.move_speed_factor
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
