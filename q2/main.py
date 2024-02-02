@@ -3,6 +3,7 @@ from settings import Settings
 import game_functions as gf
 from player import Player
 from pygame.sprite import Group
+from collectible import Collectible
 
 def run_game():
     #settings instance
@@ -18,16 +19,21 @@ def run_game():
     #creating a list of projectiles
     projectiles = Group()
     
-    #enemy instance
+    #list of enemies
     enemies = Group()
     
+    #list of collectiles
+    collectibles = Group()
+    
     gf.create_enemies(screen,settings,enemies)
+    
+    gf.create_collectibles(screen, settings, collectibles)
     
     while True:
         
         gf.check_events(settings, screen, player,projectiles)
         gf.update_projectile(projectiles, enemies)
-        gf.update_screen(screen, settings, player, projectiles, enemies)
+        gf.update_screen(screen, settings, player, projectiles, enemies, collectibles)
         
         
         pygame.display.flip()

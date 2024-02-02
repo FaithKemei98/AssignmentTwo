@@ -15,3 +15,6 @@ class Settings:
         self.enemy_speed_factor = 0.05
         self.enemies_number = 4
         
+        #collectible_attribute
+        self.collectible_num =1
+        

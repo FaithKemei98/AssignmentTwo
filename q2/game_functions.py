@@ -2,6 +2,7 @@ import sys
 import pygame
 from projectile import Projectile
 from enemy import Enemy
+from collectible import Collectible
 
 def check_events(settings, screen,player, projectiles):
     for event in pygame.event.get():
@@ -47,15 +48,15 @@ def update_projectile(projectiles, enemies):
             projectiles.remove(proj) 
             
         
-def update_screen(screen, settings, player,projectiles,enemy):
+def update_screen(screen, settings, player,projectiles,enemy, collectibles):
     screen.fill(settings.bg_color)
     for proj in projectiles.sprites():
         proj.draw_projectile()
     player.update()
     player.blit_me()
     enemy.update()
-    #enemy.blitMe()
     enemy.draw(screen)
+    collectibles.draw(screen)
     
 
 def create_enemies(screen, settings, enemies):
@@ -64,3 +65,10 @@ def create_enemies(screen, settings, enemies):
     for enem_num in range(enemies_number):
         enemy = Enemy(settings, screen)
         enemies.add(enemy)
+        
+
+def create_collectibles(screen, settings, collectibles):
+    collectibles_num = settings.collectible_num
+    for i in range(collectibles_num):
+        collectible = Collectible(screen,settings)
+        collectibles.add(collectible)
