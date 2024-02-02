@@ -33,6 +33,7 @@ def run_game():
         
         gf.check_events(settings, screen, player,projectiles)
         gf.update_projectile(projectiles, enemies)
+        gf.update_enemy(enemies, player)
         gf.update_screen(screen, settings, player, projectiles, enemies, collectibles)
         
         

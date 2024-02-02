@@ -46,6 +46,12 @@ def update_projectile(projectiles, enemies):
     for proj in projectiles.copy():
         if proj.rect.bottom <=0:
             projectiles.remove(proj) 
+    
+    #detecting collision between projectile and an enemy
+        check_projectile_enemy_collision(projectiles, enemies)
+
+def check_projectile_enemy_collision(projectiles, enemies):
+    collision = pygame.sprite.groupcollide(projectiles, enemies, True, True)
             
         
 def update_screen(screen, settings, player,projectiles,enemy, collectibles):
@@ -72,3 +78,7 @@ def create_collectibles(screen, settings, collectibles):
     for i in range(collectibles_num):
         collectible = Collectible(screen,settings)
         collectibles.add(collectible)
+
+def update_enemy( enemies, player):
+    if pygame.sprite.spritecollide(player, enemies):
+        print("ship hit")

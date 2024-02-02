@@ -21,8 +21,6 @@ class Projectile(Sprite):
         self.y -= self.speed_factor
         self.rect.y = self.y
         
-        #detecting collision between projectile and an enemy
-        collision = pygame.sprite.groupcollide(projectiles, enemies, True, True)
     
     #drawing the projectile on the screen
     def draw_projectile(self):
