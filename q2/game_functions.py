@@ -34,6 +34,9 @@ def check_keydown_events(event,settings, screen, player, projectiles, stats, pla
 def check_play_button(stats, play_button, mouse_x, mouse_y, projectiles, enemies, player, screen, settings):
     button_click = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_click and not stats.game_active:
+        
+        #restore the game settings attr
+        settings.initialize_dynamic_attr()
         #hide mouse on top of play button
         pygame.mouse.set_visible(False)
         stats.reset_game()
@@ -62,7 +65,7 @@ def shoot_projectile(settings, screen, player,projectiles):
     new_projectile = Projectile(settings,screen, player)
     projectiles.add(new_projectile)
     
-def update_projectile(projectiles, enemies):
+def update_projectile(projectiles, enemies,settings,screen):
     projectiles.update(projectiles, enemies)
     #deleting bullets that are off the screen
     for proj in projectiles.copy():
@@ -70,10 +73,16 @@ def update_projectile(projectiles, enemies):
             projectiles.remove(proj) 
     
     #detecting collision between projectile and an enemy
-        check_projectile_enemy_collision(projectiles, enemies)
+        check_projectile_enemy_collision(projectiles, enemies,settings,screen)
 
-def check_projectile_enemy_collision(projectiles, enemies):
+def check_projectile_enemy_collision(projectiles, enemies, settings,screen):
     collision = pygame.sprite.groupcollide(projectiles, enemies, True, True)
+    
+    if len(enemies)==0:
+        projectiles.empty()
+        settings.increase_speed()
+        create_enemies(screen,settings, enemies)
+        
             
         
 def update_screen(screen, settings, player,projectiles,enemy,stats, collectibles, play_button):

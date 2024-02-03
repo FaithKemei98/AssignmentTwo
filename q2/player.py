@@ -28,14 +28,14 @@ class Player:
     #movement of the player
     def update(self):
         if self.moving_up and self.rect.top > self.screen_rect.top:
-            self.center_y -= self.settings.move_speed_factor
+            self.center_y -= self.settings.player_speed_factor
         if self.moving_down and self.rect.bottom < self.screen_rect.bottom:
-            self.center_y += self.settings.move_speed_factor
+            self.center_y += self.settings.player_speed_factor
         if self.moving_right and self.rect.right < self.screen_rect.right:
-            self.center_x +=self.settings.move_speed_factor
+            self.center_x +=self.settings.player_speed_factor
             
         if self.moving_left and self.rect.left > self.screen_rect.left:
-            self.center_x -= self.settings.move_speed_factor
+            self.center_x -= self.settings.player_speed_factor
             
         
         self.center_player()

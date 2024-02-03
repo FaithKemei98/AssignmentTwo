@@ -42,7 +42,7 @@ def run_game():
         
         #making sure game is played when player has more than one life
         if game_stats.game_active:
-            gf.update_projectile(projectiles, enemies)
+            gf.update_projectile(projectiles, enemies,settings,screen)
             gf.update_enemy(screen,settings,enemies, player, game_stats, projectiles)
             gf.update_screen(screen, settings, player, projectiles, enemies,game_stats, collectibles, play_button)
 
