@@ -6,14 +6,14 @@ from collectible import Collectible
 from time import sleep
 
 
-def check_events(settings, screen,player, projectiles):
+def check_events(settings, screen,player, projectiles, stats, play_button,enemies):
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
-            check_keydown_events(event,settings, screen, player, projectiles)
+            check_keydown_events(event,settings, screen, player, projectiles, stats, play_button, enemies)
         elif event.type == pygame.KEYUP:
             check_keyup_events(event, player)
 
-def check_keydown_events(event,settings, screen, player, projectiles):
+def check_keydown_events(event,settings, screen, player, projectiles, stats, play_button, enemies):
     if event.key == pygame.K_q:
         sys.exit()
     if event.key == pygame.K_RIGHT:
@@ -26,6 +26,26 @@ def check_keydown_events(event,settings, screen, player, projectiles):
         player.moving_down = True
     if event.key == pygame.K_SPACE:
         shoot_projectile(settings, screen, player,projectiles)
+        
+    if event.key == pygame.MOUSEBUTTONDOWN:
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        check_play_button(stats, play_button, mouse_x, mouse_y,projectiles, enemies, player, screen, settings)
+
+def check_play_button(stats, play_button, mouse_x, mouse_y, projectiles, enemies, player, screen, settings):
+    button_click = play_button.rect.collidepoint(mouse_x, mouse_y)
+    if button_click and not stats.game_active:
+        #hide mouse on top of play button
+        pygame.mouse.set_visible(False)
+        stats.reset_game()
+        stats.game_active = True
+        
+        #clear all enemies and projectiles
+        projectiles.empty()
+        enemies.empty()
+        
+        #create a new list of enemies and center the pplayer
+        create_enemies(screen,settings,enemies)
+        player.center_player()
         
 def check_keyup_events(event, player):
     if event.key == pygame.K_RIGHT:
@@ -56,7 +76,7 @@ def check_projectile_enemy_collision(projectiles, enemies):
     collision = pygame.sprite.groupcollide(projectiles, enemies, True, True)
             
         
-def update_screen(screen, settings, player,projectiles,enemy, collectibles):
+def update_screen(screen, settings, player,projectiles,enemy,stats, collectibles, play_button):
     screen.fill(settings.bg_color)
     for proj in projectiles.sprites():
         proj.draw_projectile()
@@ -65,6 +85,11 @@ def update_screen(screen, settings, player,projectiles,enemy, collectibles):
     enemy.update()
     enemy.draw(screen)
     collectibles.draw(screen)
+    
+    if not stats.game_active:
+        play_button.draw_button()
+    
+    pygame.display.flip()
     
 
 def create_enemies(screen, settings, enemies):
@@ -108,4 +133,5 @@ def player_hit(screen, settings, enemies, player, stats, projectiles):
     
     else:
         stats.game_active = False
+        pygame.mouse.set_visible(True)
     
