@@ -43,12 +43,12 @@ def run_game():
     
     while True:
         
-        gf.check_events(settings, screen, player,projectiles, game_stats, play_button, enemies)
+        gf.check_events(settings, screen, player,projectiles, game_stats, play_button, enemies,score_board)
         gf.update_screen(screen, settings, player, projectiles, enemies,game_stats, collectibles, play_button, score_board, screen_rect)
 
         #making sure game is played when player has more than one life
         if game_stats.game_active:
             gf.update_projectile(projectiles, enemies,settings,screen,game_stats,score_board)
-            gf.update_enemy(screen,settings,enemies, player, game_stats, projectiles)
+            gf.update_enemy(screen,settings,enemies, player, game_stats, projectiles,score_board,screen_rect)
             
 run_game()

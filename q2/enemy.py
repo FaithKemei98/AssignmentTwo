@@ -8,7 +8,7 @@ class Enemy(Sprite):
         self.screen = screen
         
         #Enemies image
-        self.image = pygame.image.load('images/ship.jpg')
+        self.image = pygame.image.load('images/enemy.jpg')
         self.rect = self.image.get_rect()
         
         #create a random points from which the enemy will start from

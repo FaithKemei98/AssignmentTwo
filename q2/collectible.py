@@ -8,7 +8,7 @@ class Collectible(Sprite):
         self.screen = screen
         self.settings = settings
         
-        self.image = pygame.image.load('images/alien.jpg')
+        self.image = pygame.image.load('images/gold.jpg')
         self.rect = self.image.get_rect()
         
         

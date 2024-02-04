@@ -1,10 +1,11 @@
 import pygame
-
-class Player:
+from pygame.sprite import Sprite
+class Player(Sprite):
     def __init__(self, screen, settings):
+        super(Player, self).__init__()
         self.screen = screen
         self.settings = settings
-        self.image = pygame.image.load('images/alien.jpg')
+        self.image = pygame.image.load('images/player.jpg')
         self.rect = self.image.get_rect()
         self.screen_rect = self.screen.get_rect()
         

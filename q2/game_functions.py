@@ -6,7 +6,7 @@ from collectible import Collectible
 from time import sleep
 
 
-def check_events(settings, screen,player, projectiles, stats, play_button,enemies):
+def check_events(settings, screen,player, projectiles, stats, play_button,enemies, score_board):
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             check_keydown_events(event,settings, screen, player, projectiles)
@@ -14,7 +14,7 @@ def check_events(settings, screen,player, projectiles, stats, play_button,enemie
             check_keyup_events(event, player)
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_x, mouse_y = pygame.mouse.get_pos()
-            check_play_button(stats, play_button, mouse_x, mouse_y,projectiles, enemies, player, screen, settings)
+            check_play_button(stats, play_button, mouse_x, mouse_y,projectiles, enemies, player, screen, settings,score_board)
         
 
 def check_keydown_events(event,settings, screen, player, projectiles):
@@ -31,7 +31,7 @@ def check_keydown_events(event,settings, screen, player, projectiles):
     if event.key == pygame.K_SPACE:
         shoot_projectile(settings, screen, player,projectiles)
 
-def check_play_button(stats, play_button, mouse_x, mouse_y, projectiles, enemies, player, screen, settings):
+def check_play_button(stats, play_button, mouse_x, mouse_y, projectiles, enemies, player, screen, settings, score_board):
     button_click = play_button.rect.collidepoint(mouse_x, mouse_y)
     if button_click and not stats.game_active:
         
@@ -49,6 +49,9 @@ def check_play_button(stats, play_button, mouse_x, mouse_y, projectiles, enemies
         #create a new list of enemies and center the pplayer
         create_enemies(screen,settings,enemies)
         player.center_player()
+        score_board.prep_players()
+        
+        
         
 def check_keyup_events(event, player):
     if event.key == pygame.K_RIGHT:
@@ -86,6 +89,13 @@ def check_projectile_enemy_collision(projectiles, enemies, settings,screen, stat
         projectiles.empty()
         settings.increase_speed()
         create_enemies(screen,settings, enemies)
+
+def check_player_collectible_collision(player, collectible, settings):
+    collision = pygame.sprite.spritecollide(player, collectible, True)
+    if collision:
+        settings.player_lives_left +=2
+        
+    
         
             
         
@@ -104,18 +114,18 @@ def update_screen(screen, settings, player,projectiles,enemy,stats, collectibles
         enemy.draw(screen)
         collectibles.draw(screen)
         score_board.show_score()
-        
-        delete_enemy_hit_bottom(screen, settings, enemy, screen_rect)
+        check_player_collectible_collision(player, collectibles, settings)
+        delete_enemy_hit_bottom(screen, settings, enemy, screen_rect, player, stats, projectiles, score_board)
         
     pygame.display.flip()
     
 
-def delete_enemy_hit_bottom(screen, settings, enemies, screen_rect):
+def delete_enemy_hit_bottom(screen, settings, enemies, screen_rect, player, stats, projectiles, score_board):
     for enem in enemies.sprites():
         if enem.rect.top >= screen_rect.bottom:
             enemies.remove(enem)
+            player_hit(screen, settings, enemies, player, stats, projectiles, score_board)
             settings.player_lives_left -=1
-            print(settings.player_lives_left)
     
     if len(enemies)==0:
         create_enemies(screen,settings,enemies)
@@ -135,16 +145,20 @@ def create_collectibles(screen, settings, collectibles):
         collectible = Collectible(screen,settings)
         collectibles.add(collectible)
 
-def update_enemy( screen,settings,enemies, player, stats, projectiles):
+def update_enemy( screen,settings,enemies, player, stats, projectiles, score_board, screen_rect):
     if pygame.sprite.spritecollideany(player, enemies):
-        player_hit(screen,settings,enemies,player, stats, projectiles)
+        player_hit(screen,settings,enemies,player, stats, projectiles, score_board)
+        
+        delete_enemy_hit_bottom(screen, settings, enemies,screen_rect, player,  stats, projectiles, score_board)
         
 
-def player_hit(screen, settings, enemies, player, stats, projectiles):
+def player_hit(screen, settings, enemies, player, stats, projectiles, score_board):
     if stats.player_lives_left > 0:
         
         #decreament the life of a player
         stats.player_lives_left -=1
+        
+        score_board.prep_players()
         
         #clear all the projectiles and enemies
         projectiles.empty()
