@@ -30,7 +30,8 @@ class Settings:
         self.player_speed_factor = 1
         self.enemy_speed_factor = 0.05
         self.projectile_speed_factor = 2
-    
+        #scoring
+        self.enemy_hit_points = 20
     
     def increase_speed(self):
         self.player_speed_factor *= self.speed_up_factor
