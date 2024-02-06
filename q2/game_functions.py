@@ -90,10 +90,12 @@ def check_projectile_enemy_collision(projectiles, enemies, settings,screen, stat
         settings.increase_speed()
         create_enemies(screen,settings, enemies)
 
-def check_player_collectible_collision(player, collectible, settings):
+def check_player_collectible_collision(screen,player, collectible, settings):
     collision = pygame.sprite.spritecollide(player, collectible, True)
     if collision:
         settings.player_lives_left +=2
+        
+        create_collectibles(screen,settings, collectible)
         
     
         
@@ -114,7 +116,9 @@ def update_screen(screen, settings, player,projectiles,enemy,stats, collectibles
         enemy.draw(screen)
         collectibles.draw(screen)
         score_board.show_score()
-        check_player_collectible_collision(player, collectibles, settings)
+        score_board.prep_players()
+        update_enemy(screen,settings,enemy,player,stats,projectiles, score_board, screen_rect)
+        check_player_collectible_collision(screen,player, collectibles, settings)
         delete_enemy_hit_bottom(screen, settings, enemy, screen_rect, player, stats, projectiles, score_board)
         
     pygame.display.flip()
@@ -125,7 +129,6 @@ def delete_enemy_hit_bottom(screen, settings, enemies, screen_rect, player, stat
         if enem.rect.top >= screen_rect.bottom:
             enemies.remove(enem)
             player_hit(screen, settings, enemies, player, stats, projectiles, score_board)
-            settings.player_lives_left -=1
     
     if len(enemies)==0:
         create_enemies(screen,settings,enemies)
