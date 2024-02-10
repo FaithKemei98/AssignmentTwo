@@ -8,6 +8,7 @@ class Game_Stats:
     def reset_stats(self):
         self.player_lives_left = self.settings.player_lives_left
         self.score =0
+        self.level = 1
        
         
         

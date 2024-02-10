@@ -88,12 +88,14 @@ def check_projectile_enemy_collision(projectiles, enemies, settings,screen, stat
     if len(enemies)==0:
         projectiles.empty()
         settings.increase_speed()
+        stats.level +=1
+        score_board.prep_level()
         create_enemies(screen,settings, enemies)
 
-def check_player_collectible_collision(screen,player, collectible, settings):
+def check_player_collectible_collision(screen,player, collectible, settings, stats):
     collision = pygame.sprite.spritecollide(player, collectible, True)
     if collision:
-        settings.player_lives_left +=2
+        stats.player_lives_left +=2
         
         create_collectibles(screen,settings, collectible)
         
@@ -103,7 +105,7 @@ def check_player_collectible_collision(screen,player, collectible, settings):
         
 def update_screen(screen, settings, player,projectiles,enemy,stats, collectibles, play_button, score_board, screen_rect):
     screen.fill(settings.bg_color)
-    if not stats.game_active or settings.player_lives_left <=0:
+    if not stats.game_active or stats.player_lives_left <=0:
         play_button.draw_button()
     
     else:
@@ -118,7 +120,7 @@ def update_screen(screen, settings, player,projectiles,enemy,stats, collectibles
         score_board.show_score()
         score_board.prep_players()
         update_enemy(screen,settings,enemy,player,stats,projectiles, score_board, screen_rect)
-        check_player_collectible_collision(screen,player, collectibles, settings)
+        check_player_collectible_collision(screen,player, collectibles, settings,stats)
         delete_enemy_hit_bottom(screen, settings, enemy, screen_rect, player, stats, projectiles, score_board)
         
     pygame.display.flip()
@@ -152,7 +154,7 @@ def update_enemy( screen,settings,enemies, player, stats, projectiles, score_boa
     if pygame.sprite.spritecollideany(player, enemies):
         player_hit(screen,settings,enemies,player, stats, projectiles, score_board)
         
-        delete_enemy_hit_bottom(screen, settings, enemies,screen_rect, player,  stats, projectiles, score_board)
+        #delete_enemy_hit_bottom(screen, settings, enemies,screen_rect, player,  stats, projectiles, score_board)
         
 
 def player_hit(screen, settings, enemies, player, stats, projectiles, score_board):

@@ -28,7 +28,7 @@ class Settings:
         
     def initialize_dynamic_attr(self):
         self.player_speed_factor = 1
-        self.enemy_speed_factor = 0.05
+        self.enemy_speed_factor = 0.1
         self.projectile_speed_factor = 2
         #scoring
         self.enemy_hit_points = 20
