@@ -15,9 +15,14 @@
 
  ### Game instructions
 
-To exit, press letter Q in your keyboard.
+To exit, press letter Q on your keyboard.
 
-Use the arrow keys to move the players.
+Use left, right, bottom and up arrow key to move the player to the left, right, bottom or up respectively.
 
 Use the space key to shoot projectiles.
+
+Move the player to where the collectible is to win prices(Increase number of lives.)
+
+The player's number of lives reduces by one if the enemy reaches the bottom of the screen or it comes to contact with player.
+
 
